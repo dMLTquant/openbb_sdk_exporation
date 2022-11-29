@@ -1,0 +1,69 @@
+
+tasks:
+  - name: Python Env
+    before: pyenv install 3.11.0rc2                             # install specific version of python
+    init: |                                                     # 'pythonenv' is an arbitrary name
+      pyenv local 3.11.0rc2 
+      alias python=python3
+      python -m pip install pip==22.3.1
+      alias pip=pip3
+      pip install notebook==6.5.2 nbdev==2.3.9 matplotlib==3.6.2 pandas==1.5.1 plotly==5.11.0 fastcore==1.5.27
+      nbdev_install_quarto
+      gp sync-done pythonenv
+    command: python --version && pip --version 
+
+  - name: Python GUI
+    init: |                                                     # 'pythongui' is an arbitrary name
+      gp sync-await pythonenv  
+      pyenv local 3.11.0rc2 
+      pip install pyqt5==5.15.7 wxPython==4.2.0
+      gp sync-done pythongui
+    command: python --version && pip --version 
+
+  - name: Python OpenBB
+    init: |                                                     # 'pythonopenbb' is an arbitrary name
+      gp sync-await pythongui  
+      pyenv local 3.11.0rc2 
+      pip install openbb==2.0.0 "openbb[all]"
+      gp sync-done pythonopenbb
+    command: python --version && pip --version 
+    
+  - name: Test Python Env                                       # wait for the above 'init' to finish
+    init: |
+      gp sync-await pythonopenbb  
+      pyenv local 3.11.0rc2                           
+    command: python -m pip list --outdated --format columns     # list outdated python packages with column formatting
+
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-preview
+
+github:
+  prebuilds:
+    # enable for the master/default branch (defaults to true)
+    master: true
+# enable for all branches in this repo (defaults to false)
+    branches: true
+# enable for pull requests coming from this repo (defaults to true)
+    pullRequests: true
+# enable for pull requests coming from forks (defaults to false)
+    pullRequestsFromForks: true
+# add a "Review in Gitpod" button as a comment to pull requests (defaults to true)
+    addComment: true
+# add a "Review in Gitpod" button to pull requests (defaults to false)
+    addBadge: false
+# add a label once the prebuild is ready to pull requests (defaults to false)
+    addLabel: prebuilt-in-gitpod
+
+
+vscode:
+  extensions:
+    - almenon.arepl            
+    - quarto.quarto
+    - ms-azuretools.vscode-docker
+    - ms-python.python
+    - ms-toolsai.jupyter-renderers
+    - ms-toolsai.jupyter
+    - eamodio.gitlens

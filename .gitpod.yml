@@ -1,6 +1,6 @@
 
 tasks:
-  - name: install and setup miniconda and openbb
+  - name: OpenBB Terminal and SDK # Install and Setup: miniconda, openbb terminal and openbb sdk
     before: |
       wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
       bash ~/miniconda.sh -b -p ${HOME}/miniconda
@@ -8,12 +8,15 @@ tasks:
       conda init
       conda install -n base -c conda-forge mamba -y
       mamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' -y   
+      git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
+      cd OpenBBTerminal
     init: |
       conda create -n obb python=3.9.6 -y                                        
       conda activate obb
       pip install openbb==2.0.0
       pip install "openbb[all]"
-    command: conda activate obb
+      poetry install -E all
+    command: openbb
 
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/

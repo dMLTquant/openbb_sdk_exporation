@@ -1,38 +1,19 @@
 
 tasks:
-  - name: Python Env
-    before: pyenv install 3.11.0rc2                             # install specific version of python
-    init: |                                                     # 'pythonenv' is an arbitrary name
-      pyenv local 3.11.0rc2 
-      alias python=python3
-      python -m pip install pip==22.3.1
-      alias pip=pip3
-      pip install notebook==6.5.2 nbdev==2.3.9 matplotlib==3.6.2 pandas==1.5.1 plotly==5.11.0 fastcore==1.5.27
-      nbdev_install_quarto
-      gp sync-done pythonenv
-    command: python --version && pip --version 
-
-  - name: Python GUI
-    init: |                                                     # 'pythongui' is an arbitrary name
-      gp sync-await pythonenv  
-      pyenv local 3.11.0rc2 
-      pip install pyqt5==5.15.7 wxPython==4.2.0
-      gp sync-done pythongui
-    command: python --version && pip --version 
-
-  - name: Python OpenBB
-    init: |                                                     # 'pythonopenbb' is an arbitrary name
-      gp sync-await pythongui  
-      pyenv local 3.11.0rc2 
-      pip install openbb==2.0.0 "openbb[all]"
-      gp sync-done pythonopenbb
-    command: python --version && pip --version 
-    
-  - name: Test Python Env                                       # wait for the above 'init' to finish
+  - name: install and setup miniconda and openbb
+    before: |
+      wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+      bash ~/miniconda.sh -b -p ${HOME}/miniconda
+      eval "$(${HOME}/miniconda/bin/conda shell.bash hook)"
+      conda init
+      conda install -n base -c conda-forge mamba -y
+      mamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' -y   
     init: |
-      gp sync-await pythonopenbb  
-      pyenv local 3.11.0rc2                           
-    command: python -m pip list --outdated --format columns     # list outdated python packages with column formatting
+      conda create -n obb python=3.9.6 -y                                        
+      conda activate obb
+      pip install openbb==2.0.0
+      pip install "openbb[all]"
+    command: conda activate obb
 
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/

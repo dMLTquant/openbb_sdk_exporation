@@ -1,7 +1,7 @@
 tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configure/projects/prebuilds
 
-  - name: Info Jupyter config-dir # jupyter --config-dir should be inside of /workspace/ to work with gitpod
-    init: eval $(gp env -e JUPYTER_CONFIG_DIR=/workspace/.jupyter/)
+  - name: Jupyter config-dir # jupyter --config-dir should be inside of /workspace/ to work with gitpod
+    before: eval $(gp env -e JUPYTER_CONFIG_DIR=/workspace/openbb/.jupyter/) # needed to work with: jupyter notebook --generate-config
     command: jupyter --paths
 
   - name: Miniconda OpenBB SDK 

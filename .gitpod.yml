@@ -1,25 +1,26 @@
 tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configure/projects/prebuilds
 
+  - name: Jupyter set config-dir
+    command: eval $(gp env -e JUPYTER_CONFIG_DIR=/workspace/.jupyter/)
+
   - name: Miniconda Install and OpenBB SDK 
     before: | 
       mkdir -p /workspace/miniconda3-install-script
       curl -o /workspace/miniconda3-install-script/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh                                 
     init: |
       bash /workspace/miniconda3-install-script/miniconda.sh -b -u -p /workspace/miniconda3
-      eval "$(/workspace/miniconda3/bin/conda shell.bash hook)" # or use: conda init # not working at the moment with gitpod
+      eval "$(/workspace/miniconda3/bin/conda shell.bash hook)"
       rm -rf /workspace/miniconda3-install-script
-      /workspace/miniconda3/bin/conda init bash # it should be just conda init bash but path in gitpod prebuilds is probelmatic 
-      /workspace/miniconda3/bin/conda create -n obb python=3.9.6 -y  
-      /workspace/miniconda3/bin/conda activate obb
+      conda init # bash
+      conda create -n obb python=3.9.6 -y  
+      conda activate obb
       pip install --upgrade pip
       pip install openbb[all]==2.0.0
     command: /workspace/miniconda3/bin/conda activate obb
 
-  - name: Info Jupyter Paths
-    command: jupyter --paths
+  - name: Info Jupyter paths
+    command: jupyter --paths # jupyter --config-dir should be inside of /workspace/ to work with gitpod
 
-  - name: Info Jupyter Paths
-    command: jupyter --config-dir # should be inside of /workspace/ to work with gitpod
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 # ports:

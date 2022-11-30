@@ -2,19 +2,21 @@ tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configu
 
   - name: OpenBB SDK 
     before: | 
-      mkdir -p ~/miniconda3
-      curl -o ~/miniconda3/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh                                 
+      mkdir -p ${HOME}/miniconda3-install-script
+      curl -o ${HOME}/miniconda3-install-script/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh                                 
     init: |
-      bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+      bash ${HOME}/miniconda3-install-script/miniconda.sh -b -u -p ${HOME}/miniconda3
+      eval "$(${HOME}/miniconda3/bin/conda shell.bash hook)"
       conda init
       gp sync-done condaenv
-    command: rm -rf ~/miniconda3/miniconda.sh 
+    command: rm -rf ${HOME}/miniconda3-install-script
 
   - name: OpenBB SDK                                  
     init: |
       gp sync-await condaenv
       conda create -n obb python=3.9.6 -y   
       conda activate obb
+      pip install --upgrade pip
       pip install openbb[all]==2.0.0
     command: conda activate obb
 

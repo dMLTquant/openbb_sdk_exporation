@@ -1,7 +1,0 @@
-{
-    "python.jupyter.defaultKernel": "obb",
-    "python.jupyter.startupCode": [
-        "%matplotlib inline"
-    ],
-    "python.jupyter.appendResults": true
-}

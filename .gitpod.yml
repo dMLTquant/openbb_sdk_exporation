@@ -7,16 +7,15 @@ tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configu
     before: | 
       mkdir -p /workspace/miniconda3-install-script
       curl -o /workspace/miniconda3-install-script/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh                                 
-    init: |
       bash /workspace/miniconda3-install-script/miniconda.sh -b -u -p /workspace/miniconda3
       eval "$(/workspace/miniconda3/bin/conda shell.bash hook)"
       rm -rf /workspace/miniconda3-install-script
-      conda init # bash
+    init: |
       conda create -n obb python=3.9.6 -y  
       conda activate obb
       pip install --upgrade pip
       pip install openbb[all]==2.0.0
-    command: /workspace/miniconda3/bin/conda activate obb
+    command: conda activate obb
 
   - name: Info Jupyter paths
     command: jupyter --paths # jupyter --config-dir should be inside of /workspace/ to work with gitpod

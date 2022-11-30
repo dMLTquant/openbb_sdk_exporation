@@ -1,15 +1,14 @@
-image: continuumio/miniconda3:4.12.0
-
-
 tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configure/projects/prebuilds
 
   - name: OpenBB SDK 
-    before: |  
+    before: | 
+      curl -O ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh
+      bash ~/miniconda.sh -b -p ${HOME}/miniconda
+      conda init
       conda create -n obb python=3.9.6 -y                                        
     init: |
       conda activate obb
-      pip install openbb==2.0.0
-      pip install "openbb[all]"
+      pip install "openbb==2.0.0[all]"
     command: conda activate obb
 
 

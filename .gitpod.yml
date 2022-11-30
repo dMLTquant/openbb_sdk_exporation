@@ -1,18 +1,13 @@
 tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configure/projects/prebuilds
 
-  - name: Miniconda Install
+  - name: Miniconda Install and OpenBB SDK 
     before: | 
       mkdir -p /workspace/miniconda3-install-script
       curl -o /workspace/miniconda3-install-script/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh                                 
     init: |
       bash /workspace/miniconda3-install-script/miniconda.sh -b -u -p /workspace/miniconda3
       eval "$(/workspace/miniconda3/bin/conda shell.bash hook)" # or use: conda init # not working at the moment with gitpod
-      gp sync-done condaenv
-    command: rm -rf /workspace/miniconda3-install-script
-
-  - name: OpenBB SDK                                  
-    init: |
-      gp sync-await condaenv
+      rm -rf /workspace/miniconda3-install-script
       /workspace/miniconda3/bin/conda init bash # it should be just conda init bash but path in gitpod prebuilds is probelmatic 
       /workspace/miniconda3/bin/conda create -n obb python=3.9.6 -y  
       /workspace/miniconda3/bin/conda activate obb

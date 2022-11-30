@@ -1,7 +1,8 @@
 tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configure/projects/prebuilds
 
-  - name: Jupyter set config-dir
-    command: eval $(gp env -e JUPYTER_CONFIG_DIR=/workspace/.jupyter/)
+  - name: Jupyter set config-dir # jupyter --config-dir should be inside of /workspace/ to work with gitpod
+    init: eval $(gp env -e JUPYTER_CONFIG_DIR=/workspace/.jupyter/)
+    command: jupyter --paths
 
   - name: Miniconda Install and OpenBB SDK 
     before: | 
@@ -17,9 +18,6 @@ tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configu
       pip install --upgrade pip
       pip install openbb[all]==2.0.0
     command: conda activate obb
-
-  - name: Info Jupyter paths
-    command: jupyter --paths # jupyter --config-dir should be inside of /workspace/ to work with gitpod
 
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/

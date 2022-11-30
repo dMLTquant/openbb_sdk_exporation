@@ -10,6 +10,7 @@ tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configu
       bash /workspace/miniconda3-install-script/miniconda.sh -b -u -p /workspace/miniconda3
       eval "$(/workspace/miniconda3/bin/conda shell.bash hook)"
       rm -rf /workspace/miniconda3-install-script
+      alias conda=/workspace/miniconda3/bin/conda
     init: |
       conda create -n obb python=3.9.6 -y  
       conda activate obb

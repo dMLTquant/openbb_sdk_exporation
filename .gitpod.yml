@@ -1,28 +1,24 @@
-
 tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configure/projects/prebuilds
-  - name: OpenBB Terminal # Install and Setup: miniconda, openbb terminal and openbb sdk
-    before: |  
-      git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
-      wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-      bash ~/miniconda.sh -b -p ${HOME}/miniconda
-      eval "$(${HOME}/miniconda/bin/conda shell.bash hook)"
-      conda init
-      conda install -n base -c conda-forge mamba -y
-      mamba create -n genelab-utils -c conda-forge -c bioconda -c defaults -c astrobiomike 'genelab-utils>=1.1.02' -y 
-      conda create -n obb python=3.9.6 -y                                        
+
+  - name: OpenBB SDK 
+    before: | 
+      mkdir -p ~/miniconda3
+      curl -o ~/miniconda3/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 
+      bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+      rm -rf ~/miniconda3/miniconda.sh
+      ~/miniconda3/bin/conda init bash
+      ~/miniconda3/bin/conda init zsh                                    
+    init: |
+      conda create -n obb python=3.9.6 -y   
       conda activate obb
-      pip install openbb==2.0.0
-      pip install "openbb[all]"
-      cd OpenBBTerminal
-      poetry install -E all
-    init: conda activate obb
-    command: openbb
+      pip install openbb[all]==2.0.0
+    command: conda activate obb
 
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
-ports:
-  - port: 3000
-    onOpen: open-preview
+# ports:
+#   - port: 3000
+#     onOpen: open-preview
 
 github:
   prebuilds:

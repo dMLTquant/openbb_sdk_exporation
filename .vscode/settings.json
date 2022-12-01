@@ -1,0 +1,7 @@
+{
+    "python.jupyter.defaultKernel": "/workspace/miniconda3/envs/obb/bin/python3.9",
+    "python.jupyter.startupCode": [
+        "%matplotlib inline"
+    ],
+    "python.jupyter.appendResults": true
+}

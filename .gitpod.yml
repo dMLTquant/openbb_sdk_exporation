@@ -41,10 +41,6 @@ github:
 
 vscode:
   extensions:
-    - almenon.arepl            
-    - quarto.quarto
-    - ms-azuretools.vscode-docker
     - ms-python.python
     - ms-toolsai.jupyter-renderers
     - ms-toolsai.jupyter
-    - eamodio.gitlens

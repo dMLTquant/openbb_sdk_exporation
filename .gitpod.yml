@@ -12,7 +12,7 @@ tasks: # before and init tasks are pre-built: https://www.gitpod.io/docs/configu
       conda create -n obb python=3.9.6 -y  
       conda activate obb
       pip install --upgrade pip
-      pip install openbb[all]==2.1.0
+      pip install openbb[all]==2.2.0
     command: conda activate obb
 
 
